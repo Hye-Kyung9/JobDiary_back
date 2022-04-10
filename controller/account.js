@@ -1,4 +1,5 @@
 import Account from "../models/account.js";
+import bcrypt from "bcryptjs";
 
 export const Register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -19,16 +20,18 @@ export const Register = async (req, res) => {
     };
   } else {
     try {
+      const hash = bcrypt.hashSync(password, 12);
       const user = await new Account({
         username,
         email,
-        password,
+        password: hash,
       }).save();
       result = {
         ok: true,
         error: null,
       };
     } catch (err) {
+      console.log(err);
       result = {
         ok: false,
         error: err.message,
@@ -51,7 +54,7 @@ export const Login = async (req, res) => {
   });
 
   if (existingUser != null) {
-    if (password === existingUser.password) {
+    if (bcrypt.compareSync(password, existingUser.password)) {
       result = {
         ok: true,
         error: null,
