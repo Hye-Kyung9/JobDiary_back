@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import passportLocalMongoose from "passport-local-mongoose";
 
 const Schema = mongoose.Schema;
 
@@ -10,10 +11,6 @@ const Account = new Schema({
   },
   // 소셜 계정으로 회원가입을 할 경우에는 각 서비스에서 제공되는 id 와 accessToken 을 저장
   social: {
-    kakao: {
-      id: String,
-      accessToken: String,
-    },
     google: {
       clientId: String,
       accessToken: String,
@@ -29,11 +26,12 @@ const Account = new Schema({
     type: String,
     required: true,
   },
-  thoughtCount: { type: Number, default: 0 }, // 서비스에서 포스트를 작성 할 때마다 1씩 증가
-  createdAt: { type: Date, default: Date.now }, //계정이 생성된 시간
-  // {
-  //   timestamps: true
-  // }
 });
 
-export default mongoose.model("account", Account);
+//passportLocalMongoose 적용함.
+Account.plugin(passportLocalMongoose, {
+  usernameField: "email",
+});
+
+const model = mongoose.model("Account", Account);
+export default model;

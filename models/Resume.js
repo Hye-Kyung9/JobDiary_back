@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const boardSchema = new Schema(
+const Resume = new Schema(
   {
-    writer: {
+    wrieter: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: "User",
@@ -17,7 +17,7 @@ const boardSchema = new Schema(
       type: String,
       required: true,
     },
-    desc: {
+    content: {
       type: String,
       required: true,
     },
@@ -30,6 +30,4 @@ const boardSchema = new Schema(
   { timestamps: true }
 );
 
-const Board = mongoose.model("Board", boardSchema);
-
-module.exports = { Board };
+export default mongoose.model("resume", Resume);

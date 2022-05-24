@@ -1,7 +1,9 @@
-import Account from "../models/account.js";
+import Account from "../models/Account.js";
 import bcrypt from "bcryptjs";
+import passport from "passport";
 
-export const Register = async (req, res) => {
+export const Register = async (req, res, next) => {
+  // 클라이언트에서 날린 정보 추출
   const { username, email, password } = req.body;
 
   let result = {
@@ -25,11 +27,14 @@ export const Register = async (req, res) => {
         username,
         email,
         password: hash,
-      }).save();
+      });
+      await Account.register(user, password);
+
       result = {
         ok: true,
         error: null,
       };
+      next();
     } catch (err) {
       console.log(err);
       result = {
@@ -42,10 +47,16 @@ export const Register = async (req, res) => {
   res.json(result);
 };
 
+export const postLogin = passport.authenticate("local", {
+  successRedirect: "/routes/login_success",
+  failureRedirect: "/routes/login_fail",
+});
+
 export const Login = async (req, res) => {
   const { email, password } = req.body;
   let result = {
     ok: null,
+    username: null,
     error: null,
   };
 
@@ -57,6 +68,7 @@ export const Login = async (req, res) => {
     if (bcrypt.compareSync(password, existingUser.password)) {
       result = {
         ok: true,
+        username: existingUser.username,
         error: null,
       };
     } else {
