@@ -10,6 +10,7 @@ import passport from "passport";
 import "./passport/index.js";
 import MongoStore from "connect-mongo";
 // const MongoStore = require("connect-mongo")(session);
+import fileupload from "express-fileupload";
 
 dotenv.config();
 
@@ -19,6 +20,22 @@ server.use(express.json());
 server.use(cors()); //리액트와 nodejs 서버간 ajax 요청
 server.use(bodyParser.json()); //데이터를 주고받을때 json 형식 사용
 server.use(cookieParser(process.env.COOKIE_ID)); // 세션과 쿠키 미들웨어
+
+server.use(fileupload());
+server.use(express.static("files"));
+
+server.post("/fileUpload", (req, res) => {
+  let saveFilepath = path.join(__dirname, "react-project", "build", "/");
+  let file = req.files.file;
+  let fileName = file.name;
+
+  file.mv(saveFilepath + fileName, (err) => {
+    if (err) {
+      res.status(500).send({ message: "파일전송실패", code: 500 });
+    }
+    res.status(200).send({ message: "파일전송성공", code: 200 });
+  });
+});
 
 server.use(
   session({
