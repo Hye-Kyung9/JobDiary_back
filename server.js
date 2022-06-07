@@ -29,6 +29,8 @@ server.use(cookieParser(process.env.COOKIE_ID)); // 세션과 쿠키 미들웨�
 server.use(fileupload());
 server.use(express.static("files"));
 
+server.use("/api/calendar", calendar);
+
 server.use(
   session({
     secret: process.env.COOKIE_ID,
@@ -40,12 +42,10 @@ server.use(
     }),
     cookie: {
       httpOnly: true, // js 코드로 쿠키를 가져오지 못하게
-      secure: false, // https 에서만 가져오도록 할 것인가?
+      // secure: false, // https 에서만 가져오도록 할 것인가?
     },
   })
 );
-
-server.use("/api/calendar", calendar);
 
 server.listen(process.env.PORT, (err) => {
   if (err) {

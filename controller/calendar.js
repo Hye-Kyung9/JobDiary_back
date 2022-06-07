@@ -5,9 +5,6 @@ import moment from "moment";
 
 const router = express.Router();
 
-// const router = require("express").Router();
-// const Event = require("../models/Event");
-
 router.post("/create-event", async (req, res) => {
   const event = Event(req.body);
   await event.save();
