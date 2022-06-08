@@ -34,7 +34,9 @@ export const Register = async (req, res, next) => {
         ok: true,
         error: null,
       };
-      next();
+      console.log(result);
+
+      // next();
     } catch (err) {
       console.log(err);
       result = {
@@ -43,7 +45,7 @@ export const Register = async (req, res, next) => {
       };
     }
   }
-
+  console.log(result);
   res.json(result);
 };
 
@@ -83,6 +85,13 @@ export const Login = async (req, res) => {
       error: "없는 아이디 입니다.",
     };
   }
-
   res.json(result);
 };
+
+export const logout = (req, res, next) => {
+  console.log("logout");
+  req.logout();
+  res.json("logout");
+};
+
+export const loginCheck = (req, res, next) => {};
