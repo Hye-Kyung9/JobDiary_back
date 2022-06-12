@@ -14,21 +14,14 @@ import calendar from "./controller/calendar.js";
 
 dotenv.config();
 
-// cors 관련 코드 추가
-const whitelist = ["http://localhost:3000"];
-var corsOptions = function (req, callback) {
-  var corsOptions;
-  if (whitelist.indexOf(req.header("Origin")) !== -1) {
-    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
-  } else {
-    corsOptions = { origin: false }; // disable CORS for this request
-  }
-  callback(null, corsOptions); // callback expects two parameters: error and options
-};
-
 const server = express();
 server.use(express.json());
-server.use(cors(corsOptions)); //리액트와 nodejs 서버간 ajax 요청
+server.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+); //리액트와 nodejs 서버간 ajax 요청
 server.use(bodyParser.json()); //데이터를 주고받을때 json 형식 사용
 server.use(cookieParser(process.env.COOKIE_ID)); // 세션과 쿠키 미들웨어
 

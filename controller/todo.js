@@ -1,5 +1,3 @@
-import Todo from "../models/Todo.js";
-
 exports.get = function (req, res) {
   TodoTask.find({}, null, { sort: { date: -1 } }, (err, tasks) => {
     res.render("todo", { Todo: tasks });

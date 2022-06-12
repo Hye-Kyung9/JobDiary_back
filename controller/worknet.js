@@ -8,8 +8,7 @@ export const worknet = async (req, res, next) => {
 
   const config = {
     method: "get",
-    // worknet api 주소 수정 해야함
-    url: "http://openapi.work.go.kr/opi/opi/opia/wantedApi.do?authKey=WNL3IFSAFP21YKJ55RMX92VR1HK&callTp=L&returnType=XML&startPage=1&display=10&occupation=024",
+    url: "https://openapi.work.go.kr/opi/opi/opia/wantedApi.do?authKey=WNL1TYI6B8EEDV4BS5BZ92VR1HK&callTp=L&returnType=XML&startPage=1&display=50&occupation=024",
     headers: {
       Cookie:
         "WMONID=NOCHoiJ1mQX; OPENAPISESSIONID=YCU5HW8oBCoErakpFSQS7xbq2TWOusEX5frhKxq_-HqTQ8gYEPtg!-214294304!-992808964",
